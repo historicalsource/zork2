@@ -395,7 +395,7 @@ damaged, since an oblong hole has been chipped out of the front of it." CR>)
 "On the far wall is a rusty box, whose door has been blown off." CR>)>)>>
 
 <ROUTINE SAFE-FCN ()
-	<COND (<VERB? TAKE>
+	<COND (<AND <VERB? TAKE> <EQUAL? ,PRSO ,SAFE>>
 	       <TELL "The box is imbedded in the wall." CR>)
 	      (<VERB? OPEN>
 	       <COND (,SAFE-FLAG <TELL "The box has no door!" CR>)
@@ -506,7 +506,7 @@ about 200 feet above and there is a precipitous drop to the bottom.">
 		  <TELL " The way to the south is blocked by rubble." CR>)
 		 (T <TELL " There is a small door to the south." CR>)>)>>
 
-<ROUTINE BLAST ()
+;<ROUTINE BLAST () ;"APPARENTLY UNUSED?"
     <COND (<EQUAL? ,HERE ,SAFE-ROOM>)
 	  (T
 	   <TELL "You must explain how to do that." CR>)>>
@@ -532,7 +532,15 @@ notice the gnome nervously glancing at his watch." CR>
 <GLOBAL GNOME-FLAG <>>
 
 <ROUTINE GNOME-FCN ()
-    <COND (<AND <VERB? GIVE THROW> <EQUAL? ,PRSI ,GNOME>>
+    <COND (<VERB? TELL>
+	   <SETG P-CONT <>>
+	   <SETG QUOTE-FLAG <>>
+	   <COND (<NOT ,GNOME-FLAG>
+		  <ENABLE <QUEUE I-NERVOUS 5>>)>
+	   <SETG GNOME-FLAG T>
+	   <TELL
+"The gnome appears increasingly nervous." CR>)
+	  (<AND <VERB? GIVE THROW> <EQUAL? ,PRSI ,GNOME>>
 	   <COND (<GETPT ,PRSO ,P?VALUE>
 		  <TELL
 "\"Thank you very much for the " D ,PRSO ". I don't believe
@@ -731,9 +739,9 @@ become the master of his domain, but the final challenge awaits!|
 		<FINISH>)
 		      (T
 		       <JIGS-UP
-"The green curves begin to vibrate toward you, as if searching for something.
-One by one your possessions glow bright green. Finally, you are attacked by
-these magical wardens, and destroyed!">)>)>>
+"The green curves begin to vibrate toward you, as if searching for
+something. One by one your possessions glow bright green. Finally, you
+are attacked by these magical wardens, and destroyed!">)>)>>
 
 \
 
@@ -1156,7 +1164,8 @@ for movement.">
 		     (<EQUAL? ,PRSO ,SQUARE-BUTTON>
 		      <COND (,CAROUSEL-ZOOM-FLAG
 			     <TELL "Nothing seems to happen." CR>)
-			    (<SETG CAROUSEL-ZOOM-FLAG T>
+			    (ELSE
+			     <SETG CAROUSEL-ZOOM-FLAG T>
 		      	     <TELL "The whirring increases in intensity." CR>)>)
 		     (<EQUAL? ,PRSO ,ROUND-BUTTON>
 		      <COND (,CAROUSEL-ZOOM-FLAG
@@ -1250,16 +1259,16 @@ say, but the robot appears to be smiling." CR CR>
 "\"I am sorry but that is difficult for a being with no mouth.\"" CR>)>
 		      <RTRUE>)
 		     (<AND <PROB 2>
-			   <IN? ,ADVENTURER ,HERE>>
+			   <EQUAL? <META-LOC ,ADVENTURER> ,HERE>>
 		      <TELL
 "\"Buzz! Buzz! Buzz! My circuits are getting rusty. Try again.\"" CR>)
 		     (<VERB? READ EXAMINE>
-		      <COND (<IN? ,ADVENTURER ,HERE>
+		      <COND (<EQUAL? <META-LOC ,ADVENTURER> ,HERE>
 			     <TELL
 "\"My vision is not sufficiently acute to do that.\"" CR>)>
 		      <RTRUE>)
 		     (<VERB? DROP PUT THROW>
-		      <COND (<NOT <IN? ,ADVENTURER ,HERE>>
+		      <COND (<NOT <EQUAL? <META-LOC ,ADVENTURER> ,HERE>>
 			     <RFALSE>)
 			    (<IN? ,PRSO ,ROBOT>
 			     <TELL "\"Whirr, buzz, click!\"" CR>
@@ -1267,8 +1276,10 @@ say, but the robot appears to be smiling." CR CR>
 			    (T
 			     <TELL
 "\"Click! I don't have that. Buzz! Whirr!\"" CR>)>)
-		     (<VERB? WALK TAKE PUSH TURN>
-		      <COND (<NOT <IN? ,ADVENTURER ,HERE>>
+		     (<OR <VERB? WALK>
+			  <AND <VERB? TAKE PUSH TURN>
+			       <NOT <FSET? ,PRSO ,ACTORBIT>>>>
+		      <COND (<NOT <EQUAL? <META-LOC ,ADVENTURER> ,HERE>>
 			     <RFALSE>)
 			    (<PROB 80>
 			     <TELL "\"Whirr, buzz, click!\"" CR>)
@@ -1276,7 +1287,7 @@ say, but the robot appears to be smiling." CR CR>
 			     <TELL "\"Buzz, click, whirr!\"" CR>)>
 		      <RFALSE>)
 		     (T
-		      <COND (<IN? ,ADVENTURER ,HERE>
+		      <COND (<EQUAL? <META-LOC ,ADVENTURER> ,HERE>
 			     <TELL
 "\"My programming is insufficient to allow me to perform that task.\"" CR>)>
 		      <RTRUE>)>)
@@ -1357,9 +1368,9 @@ safety deposit boxes for the customer. On the north side of the room is a
 sign which reads  \"Viewing Room\". On the ">
 	   <COND (<EQUAL? ,HERE ,TELLER-WEST> <TELL "west">)
 		 (T <TELL "east">)>
-	   <TELL " side of the room, above an open door, is a sign reading||
-
-            BANK PERSONNEL ONLY|
+	   <TELL " side of the room, above an open door, is a sign reading:|
+|
+          BANK PERSONNEL ONLY|
 " CR>)>>
 
 <ROUTINE SCOL-OBJECT ("OPTIONAL" (OBJ <>))
@@ -1448,8 +1459,16 @@ here, but we can make this ONE exception, I suppose...\" He looks
 askance at you over his wire-rimmed bifocals." CR>
 		       <MOVE ,GNOME-OF-ZURICH ,HERE>)>)>>
 
+<ROUTINE BOX-F ()
+	 <TELL "The gnome clutches it possessively." CR>>
+
 <ROUTINE ZGNOME-FCN ()
-    <COND (<AND <VERB? GIVE THROW> <EQUAL? ,PRSI ,GNOME-OF-ZURICH>>
+    <COND (<VERB? TELL>
+	   <SETG P-CONT <>>
+	   <SETG QUOTE-FLAG <>>
+	   <TELL
+"The gnome appears increasingly impatient." CR>)
+	  (<AND <VERB? GIVE THROW> <EQUAL? ,PRSI ,GNOME-OF-ZURICH>>
 	   <COND (<GETPT ,PRSO ,P?VALUE>
 		  <TELL
 "The gnome carefully places the " D ,PRSO  " in the
@@ -1949,7 +1968,24 @@ Unfortunately, wishing makes the coin go...." CR>
 		       <TELL "The lamp is turned off.">)>
 		<CRLF>)>>
 
-<ROUTINE LIGHT-INT (OBJ INTNAM TBLNAM "AUX" (TBL <VALUE .TBLNAM>) TICK)
+<ROUTINE I-LANTERN ("AUX" TICK (TBL <VALUE LAMP-TABLE>))
+	 <ENABLE <QUEUE I-LANTERN <SET TICK <GET .TBL 0>>>>
+	 <LIGHT-INT ,LAMP .TBL .TICK>
+	 <COND (<NOT <0? .TICK>>
+		<SETG LAMP-TABLE <REST .TBL 4>>)>>
+
+<ROUTINE LIGHT-INT (OBJ TBL TICK)
+	 <COND (<0? .TICK>
+		<FCLEAR .OBJ ,ONBIT>
+		<FSET .OBJ ,RMUNGBIT>)>
+	 <COND (<OR <HELD? .OBJ> <IN? .OBJ ,HERE>>
+		<COND (<0? .TICK>
+		       <TELL
+"You'd better have more light than from the " D .OBJ "." CR>)
+		      (T
+		       <TELL <GET .TBL 1> CR>)>)>>
+
+;<ROUTINE LIGHT-INT (OBJ INTNAM TBLNAM "AUX" (TBL <VALUE .TBLNAM>) TICK)
 	 #DECL ((OBJ) OBJECT (TBLNAM INTNAM) ATOM (TBL) <PRIMTYPE VECTOR>
 		(TICK) FIX)
 	 <ENABLE <QUEUE .INTNAM <SET TICK <GET .TBL 0>>>>
@@ -2521,9 +2557,10 @@ leading west." CR>
 	 T>
 
 <ROUTINE DRAGON-LEAVES ()
-	 <MOVE ,DRAGON ,DRAGON-ROOM>
-	 <SETG DRAGON-ANGER 0>
-	 <DISABLE <INT I-DRAGON>>>
+	 <COND (<NOT <LOC ,DEAD-DRAGON>>
+		<MOVE ,DRAGON ,DRAGON-ROOM>
+		<SETG DRAGON-ANGER 0>
+		<DISABLE <INT I-DRAGON>>)>>
 
 <ROUTINE I-GARDEN ()
 	 <COND (<OR <EQUAL? ,HERE ,GARDEN-NORTH ,GAZEBO-ROOM>
@@ -2673,12 +2710,19 @@ the young woman.">)>
 		<TELL "There is no princess here." CR>)
 	       (<VERB? ATTACK MUNG RAPE>
 		<REMOVE ,PRINCESS>
-		<JIGS-UP
+		<TELL
 "The princess screams as you approach. \"Won't someone deliver
-me from this awful fate?\" she cries. Just in time, the Wizard of Frobozz
-appears, seeming to unroll himself out of nothing like a window shade.
-\"Fry!\" he intones, and a massive bolt of lightning reduces you to a pile
-of smoking ashes. (Serves you right, too, if you ask me.)">)
+me from this awful fate?\" she cries. ">
+		<COND (<IN? ,WIZARD ,HERE>
+		       <TELL
+"Shocked, the Wizard of Frobozz turns toward you.">)
+		      (ELSE
+		       <TELL "Just in time, the Wizard of Frobozz
+appears, seeming to unroll himself out of nothing like a window shade.">)>
+		<TELL
+" \"Fry!\" he intones, and a massive bolt of lightning reduces you to a pile
+of smoking ashes. (Serves you right, too, if you ask me.)">
+		<JIGS-UP>)
 	       (<OR <HELLO? ,PRINCESS> <VERB? ALARM KISS EXAMINE RUB>>
 		<COND (<AND <IN? ,PRINCESS ,DRAGON-LAIR>
 			    <EQUAL? <GET .DEM ,C-ENABLED?> 0>>
@@ -2834,7 +2878,7 @@ southwest. On this side of the menhir is carved an ornate letter \"F\"." CR>)
 		       <TELL "There is a huge menhir here." CR>)
 		      (T
 		       <TELL
-"There is a huge menhir floating like a feather in mid-air here. A
+"There is a huge menhir floating like a feather in midair here. A
 passage to the southwest opens beneath it." CR>)>
 		<COND (<EQUAL? ,HERE ,MUNGED-ROOM>
 		       <TELL
@@ -3110,7 +3154,10 @@ aquarium." CR>)>)
 "The " D .OBJ " bounces harmlessly off the glass." CR>)>)>>
 
 <ROUTINE SERPENT-FCN ()
-	 <COND (<VERB? ATTACK MUNG>
+	 <COND (<EQUAL? ,SERPENT ,WINNER>
+		<TELL
+"The serpent only stares hungrily at you." CR>)
+	       (<VERB? ATTACK MUNG>
 		<TELL
 "He swims towards you with a powerful stroke of his flippers, dagger-like
 teeth dripping. Fortunately, he doesn't want to crash into the aquarium
@@ -3252,11 +3299,17 @@ He seems somewhat chagrined to have to admit this." CR>
 	       <TELL
 "The demon laughs uproariously." CR>)
 	      (<AND <VERB? GIVE> <EQUAL? ,PRSI ,GENIE>>
-	       <COND (<AND <EQUAL? ,PRSO ,IRON-BOX> <IN? ,VIOLIN ,PRSO>>
+	       <COND (<AND <EQUAL? ,PRSO ,IRON-BOX>
+			   <IN? ,VIOLIN ,PRSO>>
 		      <TELL
-"The genie frowns briefly, then opens the box. He smiles horribly." CR>
+"The genie frowns briefly, then ">
+		      <COND (<FSET? ,PRSO ,OPENBIT> <TELL "looks inside">)
+			    (ELSE <TELL "opens">)>
+		      <TELL " the box. He smiles horribly." CR>
+		      <REMOVE-CAREFULLY ,IRON-BOX>
 		      <SETG PRSO ,VIOLIN>)>
-	       <COND (<GETPT ,PRSO ,P?VALUE>
+	       <COND (<AND <GETPT ,PRSO ,P?VALUE>
+			   <NOT <EQUAL? ,PRSO ,SWORD>>>
 		      <REMOVE-CAREFULLY ,PRSO>
 		      <SETG GENIE-HOARD <+ ,GENIE-HOARD 1>>
 		      <SCORE-UPD 2>
@@ -3327,6 +3380,7 @@ and are not great services bought at great price?"
 power." CR>)
 	              (<AND <VERB? PUT PUT-ON> <EQUAL? ,PRSO ,PALANTIR-4>>
 		       <REMOVE ,PALANTIR-4>
+		       <FCLEAR ,GENIE ,INVISIBLE>
 		       <MOVE ,GENIE ,PENTAGRAM-ROOM>
 		       <TELL
 "A cold wind blows outward from the sphere. The candles flicker, and a
@@ -3451,12 +3505,15 @@ to have gotten into quite a pickle.\" He chuckles. \"Fluoresce!\" he
 incants. It is no longer dark." CR>
 		<RTRUE>)>
 	 <COND (<AND <LOC ,WIZARD> <PROB 80>>
-		<COND (<IN? ,WIZARD ,HERE>
+		<COND (<AND ,LIT <IN? ,WIZARD ,HERE>>
 		       <TELL "The Wizard vanishes." CR>)>
 		<REMOVE ,WIZARD>
 		<RTRUE>)>
 	 <COND (<PROB 10>
-		<COND (<EQUAL? ,HERE ,POSTS-ROOM ,POOL-ROOM>
+		<COND (<NOT ,LIT>
+		       <TELL
+"You feel a slight outrush of air as something moves nearby." CR>)
+		      (<EQUAL? ,HERE ,POSTS-ROOM ,POOL-ROOM>
 		       <TELL
 "A huge and terrible wizard appears before you, as large as the largest
 tree! He looks down on you as you would look upon a gnat!" CR>)
@@ -3470,15 +3527,23 @@ grins sideways at you." CR>)
 He is wearing a high pointed hat embroidered with astrological signs.
 He has a long, stringy, and unkempt beard." CR>)>
 		<COND (<IN? ,PALANTIR-4 ,ADVENTURER>
-		       <TELL
+		       <COND (,LIT
+			      <TELL
 "The Wizard notices that you carry the Black Crystal, and with an
-unseemly haste, he disappears." CR>
+unseemly haste, he disappears." CR>)
+			     (ELSE
+			      <TELL
+"You feel a sudden inrush of air as though something disappeared." CR>)>
 		       <REMOVE ,WIZARD>
 		       <RTRUE>)
 		      (<PROB 20>
-		       <TELL
+		       <COND (,LIT
+			      <TELL
 "He mutters something (muffled by his beard) and disappears as suddenly
-as he came." CR>
+as he came." CR>)
+			     (ELSE
+			      <TELL
+"You hear low, confused muttering." CR>)>
 		       <REMOVE ,WIZARD>
 		       <RTRUE>)>
 		<COND (<IN? ,PALANTIR-1 ,ADVENTURER>
@@ -3488,9 +3553,14 @@ as he came." CR>
 		<COND (<IN? ,PALANTIR-3 ,ADVENTURER>
 		       <SET PCNT <+ .PCNT 1>>)>
 		<SET CAST-PROB <- 80 <* .PCNT 20>>>
-		<TELL
+		<COND (,LIT
+		       <TELL
 "The Wizard draws forth his wand and waves it in your direction. It
-begins to glow with a faint blue glow." CR>
+begins to glow with a faint blue glow." CR>)
+		      (ELSE
+		       <TELL
+"Suddenly, illuminated by the faint blue glow of a magic wand pointed
+in your direction, you see the Wizard!" CR>)>
 		<COND (<PROB .CAST-PROB>
 		       <MOVE ,WIZARD ,HERE>
 		       <SETG SPELL? <RANDOM ,SPELLS>>
@@ -3501,7 +3571,7 @@ begins to glow with a faint blue glow." CR>
 		       <COND (<PROB 75>
 			      <TELL
 "The Wizard, in a deep and resonant voice, speaks the word \""
-<GET ,SPELL-NAMES ,SPELL?> "!\" He cackles gleefully." CR>)
+<GET ,SPELL-NAMES ,SPELL?> "!\" He then vanishes, cackling gleefully." CR>)
 			     (T
 			      <TELL
 "The Wizard, almost inaudibly, whispers a word beginning with \"F,\"
@@ -3640,7 +3710,7 @@ again."
 	 <REPEAT ()
 		 <COND (<NOT .X> <RETURN .ROBBED?>)>
 		 <SET N <NEXT? .X>>
-		 <COND (<RIPOFF .N .WHERE> <SET ROBBED? T>)>
+		 <COND (<RIPOFF .X .WHERE> <SET ROBBED? T>)>
 		 <SET X .N>>>
 
 <ROUTINE RIPOFF (X WHERE)
@@ -3886,9 +3956,9 @@ The rose almost seemed to move its thorns into your path." CR>)>>
 	 <TELL "." CR>
 	 ,SCORE>
 
-<ROUTINE JIGS-UP (DESC "OPTIONAL" (PLAYER? <>))
- 	 #DECL ((DESC) STRING (PLAYER?) <OR ATOM FALSE>)
- 	 <TELL .DESC CR>
+<ROUTINE JIGS-UP ("OPTIONAL" (DESC <>) (PLAYER? <>))
+ 	 #DECL ((PLAYER?) <OR ATOM FALSE>)
+ 	 <COND (.DESC <TELL .DESC CR>)>
 	 <COND (<NOT <EQUAL? ,ADVENTURER ,WINNER>>
 		<TELL "
 |    ****  The " D ,WINNER " has died  ****
@@ -3925,7 +3995,6 @@ up completely, but you can't have everything." CR CR>
 <ROUTINE RANDOMIZE-OBJECTS ("AUX" (R <>) F N L)
 	 <COND (<IN? ,LAMP ,WINNER>
 		<MOVE ,LAMP ,INSIDE-BARROW>)>
-	 <PUTP ,SWORD ,P?VALUE 0>
 	 <SET N <FIRST? ,WINNER>>
 	 <REPEAT ()
 		 <SET F .N>

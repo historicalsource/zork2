@@ -1,0 +1,392 @@
+
+;COMPARISON OF SS:<ZORK2>GVERBS.ZIL.407 AND SS:<ZORK1>GVERBS.ZIL.391
+;OPTIONS ARE    /3
+
+**** FILE SS:<ZORK2>GVERBS.ZIL.407, 1-82 (1812)
+Copyright (c) 1981, 1982, 1983 Infocom, Inc. ">)
+**** FILE SS:<ZORK1>GVERBS.ZIL.391, 1-82 (1812)
+Copyright (c) 1981, 1982, 1983, 1984, 1985 Infocom, Inc. ">)
+***************
+
+**** FILE SS:<ZORK2>GVERBS.ZIL.407, 1-86 (1984)
+Copyright (c) 1981, 1982, 1983, 1984 Infocom, Inc. ">)
+**** FILE SS:<ZORK1>GVERBS.ZIL.391, 1-86 (1996)
+Copyright (c) 1981, 1982, 1983 Infocom, Inc. ">)
+***************
+
+**** FILE SS:<ZORK2>GVERBS.ZIL.407, 1-112 (2750)
+<ROUTINE V-DEBUG ()
+	 <TELL "Turning debugging feature ">
+	 <COND (,DEBUG
+		<SETG DEBUG <>>
+		<TELL "off">)
+	       (T
+		<SETG DEBUG T>
+		<TELL "on">)>
+	 <TELL "." CR>>
+**** FILE SS:<ZORK1>GVERBS.ZIL.391, 1-112 (2756)
+<ROUTINE V-COMMAND-FILE ()
+	 <DIRIN 1>
+	 <RTRUE>>
+<ROUTINE V-RANDOM ()
+	 <COND (<NOT <EQUAL? ,PRSO ,INTNUM>>
+		<TELL "Illegal call to #RND." CR>)
+	       (T
+		<RANDOM <- 0 ,P-NUMBER>>
+		<RTRUE>)>>
+<ROUTINE V-RECORD ()
+	 <DIROUT 4>
+	 <RTRUE>>
+<ROUTINE V-UNRECORD ()
+	 <DIROUT -4>
+	 <RTRUE>>
+***************
+
+**** FILE SS:<ZORK2>GVERBS.ZIL.407, 1-229 (5915)
+<ROUTINE PRE-BURN ()
+	 <COND (<NOT ,PRSI>
+		<TELL "You should say what you want to burn it with." CR>)
+**** FILE SS:<ZORK1>GVERBS.ZIL.391, 1-238 (6054)
+<ROUTINE TELL-NO-PRSI ()
+	 <TELL "You didn't say with what!" CR>>
+<ROUTINE PRE-BURN ()
+	 <COND (<NOT ,PRSI>
+		<TELL-NO-PRSI>)
+***************
+
+**** FILE SS:<ZORK2>GVERBS.ZIL.407, 1-245 (6360)
+		<COND (<IN? ,PRSO ,WINNER>
+		       <REMOVE-CAREFULLY ,PRSO>
+		       <TELL "The " D ,PRSO>
+		       <JIGS-UP
+" catches fire. Unfortunately, you were holding it at the time.">)
+**** FILE SS:<ZORK1>GVERBS.ZIL.391, 1-257 (6526)
+		<COND (<OR <IN? ,PRSO ,WINNER>
+			   <IN? ,WINNER ,PRSO>>
+		       <REMOVE-CAREFULLY ,PRSO>
+		       <TELL "The " D ,PRSO>
+		       <TELL
+" catches fire. Unfortunately, you were ">
+		       <COND (<IN? ,WINNER ,PRSO>
+			      <TELL "in">)
+			     (T <TELL "holding">)>
+		       <JIGS-UP " it at the time.">)
+***************
+
+**** FILE SS:<ZORK2>GVERBS.ZIL.407, 1-266 (6914)
+	 <COND %<COND (<==? ,ZORK-NUMBER 1>
+		       '(<FSET? ,PRSO ,VEHBIT>
+			 <V-CLIMB-UP ,P?UP ,PRSO>))
+		      (T
+		       '(<FSET? ,PRSO ,VEHBIT>
+			 <PERFORM ,V?BOARD ,PRSO>
+			 <RTRUE>))>
+**** FILE SS:<ZORK1>GVERBS.ZIL.391, 1-283 (7216)
+	 <COND (<FSET? ,PRSO ,VEHBIT>
+		<PERFORM ,V?BOARD ,PRSO>
+		<RTRUE>)
+***************
+
+**** FILE SS:<ZORK2>GVERBS.ZIL.407, 1-358 (9735)
+**** FILE SS:<ZORK1>GVERBS.ZIL.391, 1-371 (9913)
+		<COND (<IN? ,WINNER ,PRSO>
+		       <TELL
+"Not a bright idea, especially since you're in it." CR>
+		       <RTRUE>)>
+***************
+
+**** FILE SS:<ZORK2>GVERBS.ZIL.407, 1-373 (10192)
+	 <COND (<FSET? ,PRSI ,TOOLBIT>
+**** FILE SS:<ZORK1>GVERBS.ZIL.391, 1-390 (10493)
+	 <COND (<EQUAL? ,PRSI ,SHOVEL>
+		<TELL "There's no reason to be digging here." CR>)
+	       (<FSET? ,PRSI ,TOOLBIT>
+***************
+
+**** FILE SS:<ZORK2>GVERBS.ZIL.407, 1-440 (12400)
+	 <COND (<AND <SET EAT? <FSET? ,PRSO ,FOODBIT>> <IN? ,PRSO ,WINNER>>
+		<COND (<VERB? DRINK>
+**** FILE SS:<ZORK1>GVERBS.ZIL.391, 1-459 (12788)
+	 <COND (<SET EAT? <FSET? ,PRSO ,FOODBIT>>
+		<COND (<AND <NOT <IN? ,PRSO ,WINNER>>
+			    <NOT <IN? <LOC ,PRSO> ,WINNER>>>
+		       <TELL "You're not holding that." CR>)
+		      (<VERB? DRINK>
+***************
+
+**** FILE SS:<ZORK2>GVERBS.ZIL.407, 1-452 (12816)
+			   <GLOBAL-IN? ,GLOBAL-WATER ,HERE>
+			   <EQUAL? ,PRSO ,PSEUDO-OBJECT>>
+		       <HIT-SPOT>)
+		      (<NOT .NOBJ>
+		       <TELL
+"There isn't any water here." CR>)
+		      (<NOT <IN? .NOBJ ,WINNER>>
+**** FILE SS:<ZORK1>GVERBS.ZIL.391, 1-474 (13308)
+			   <EQUAL? ,PRSO ,PSEUDO-OBJECT>>
+		       <HIT-SPOT>)
+		      (<OR <NOT .NOBJ>
+			   <NOT <ACCESSIBLE? .NOBJ>>>
+		       <TELL
+"You don't have any to drink." CR>)
+		      (<ACCESSIBLE? .NOBJ> ;<NOT <IN? .NOBJ ,WINNER>>
+***************
+
+**** FILE SS:<ZORK2>GVERBS.ZIL.407, 1-474 (13467)
+         <COND (<AND <EQUAL? ,PRSO ,WATER>
+		     <NOT <GLOBAL-IN? ,GLOBAL-WATER ,HERE>>>
+		<REMOVE-CAREFULLY ,PRSO>)>>
+**** FILE SS:<ZORK1>GVERBS.ZIL.391, 1-496 (13979)
+         <REMOVE-CAREFULLY ,PRSO>>
+***************
+
+**** FILE SS:<ZORK2>GVERBS.ZIL.407, 1-564 (16542)
+		<SETG P-IT-OBJECT <>>
+		<SETG P-IT-LOC <>>)>
+**** FILE SS:<ZORK1>GVERBS.ZIL.391, 1-584 (16967)
+		<SETG P-IT-OBJECT <>>)>
+***************
+
+**** FILE SS:<ZORK2>GVERBS.ZIL.407, 1-586 (17073)
+	 <COND (<IN? ,WINNER ,PRSO>
+		<PERFORM ,V?DISEMBARK ,PRSO>
+		<RTRUE>)
+	       (T <DO-WALK ,P?OUT>)>>
+**** FILE SS:<ZORK1>GVERBS.ZIL.391, 1-605 (17476)
+	 <DO-WALK ,P?OUT>>
+***************
+
+**** FILE SS:<ZORK2>GVERBS.ZIL.407, 1-596 (17299)
+		<SET TX <GETPT ,HERE ,P?GLOBAL>>
+		<COND (<AND .TX <ZMEMQB ,GLOBAL-WATER .TX <- <PTSIZE .TX> 1>>>
+		       <PERFORM ,V?FILL ,PRSO ,GLOBAL-WATER>
+		       <RTRUE>)
+		      (<IN? ,WATER <LOC ,WINNER>>
+		       <PERFORM ,V?FILL ,PRSO ,WATER>
+		       <RTRUE>)
+		      (T
+		       <TELL "There is nothing to fill it with." CR>
+		       <RTRUE>)>)>
+	 <COND (<EQUAL? ,PRSI ,WATER>
+		<RFALSE>)
+**** FILE SS:<ZORK1>GVERBS.ZIL.391, 1-612 (17617)
+		<COND (<AND <SET TX <GETPT ,HERE ,P?GLOBAL>>
+			    <ZMEMQB ,GLOBAL-WATER .TX <- <PTSIZE .TX> 1>>>
+		       <SETG PRSI ,GLOBAL-WATER>
+		       <RFALSE>)
+		      (T
+		       <TELL "There is nothing to fill it with." CR>
+		       <RTRUE>)>)
+***************
+
+**** FILE SS:<ZORK2>GVERBS.ZIL.407, 1-756 (21795)
+	       (<FSET? ,PRSO ,BURNBIT>
+		<TELL
+"If you wish to burn the " D ,PRSO ", you should say so." CR>)
+**** FILE SS:<ZORK1>GVERBS.ZIL.391, 1-767 (21960)
+***************
+
+**** FILE SS:<ZORK2>GVERBS.ZIL.407, 1-960 (27706)
+		<PERFORM ,V?THROW ,PRSO>
+		<RTRUE>)>>
+**** FILE SS:<ZORK1>GVERBS.ZIL.391, 1-968 (27765)
+		<TELL "Huh?" CR>)>>
+***************
+
+**** FILE SS:<ZORK2>GVERBS.ZIL.407, 1-1313 (37385)
+		      %<COND (<==? ,ZORK-NUMBER 2>
+			      '(<EQUAL? ,PRSO ,DOOR-KEEPER>
+				<SETG PRSI <>>
+				<RFALSE>))
+			     (T
+			      '(<NULL-F> T))>
+**** FILE SS:<ZORK1>GVERBS.ZIL.391, 1-1320 (37425)
+***************
+
+**** FILE SS:<ZORK2>GVERBS.ZIL.407, 1-1351 (38471)
+	<COND (<FSET? ,PRSO ,DOORBIT>
+	       <DO-WALK <OTHER-SIDE ,PRSO>>
+**** FILE SS:<ZORK1>GVERBS.ZIL.391, 1-1352 (38359)
+	<COND (<AND <FSET? ,PRSO ,DOORBIT>
+		    <SET M <OTHER-SIDE ,PRSO>>>
+	       <DO-WALK .M>
+***************
+
+**** FILE SS:<ZORK2>GVERBS.ZIL.407, 1-1357 (38659)
+	      (<OR .OBJ <NOT <FSET? ,PRSO ,TAKEBIT>>>
+**** FILE SS:<ZORK1>GVERBS.ZIL.391, 1-1359 (38571)
+	      (<AND <NOT .OBJ> <NOT <FSET? ,PRSO ,TAKEBIT>>>
+***************
+
+**** FILE SS:<ZORK2>GVERBS.ZIL.407, 1-1395 (40068)
+**** FILE SS:<ZORK1>GVERBS.ZIL.391, 1-1397 (39987)
+	      (.OBJ
+	       <TELL "You can't do that!" CR>)
+***************
+
+**** FILE SS:<ZORK2>GVERBS.ZIL.407, 1-1409 (40583)
+		      (<AND ,PRSI <FSET? ,PRSI ,ACTORBIT>>
+**** FILE SS:<ZORK1>GVERBS.ZIL.391, 1-1413 (40557)
+		      (<FSET? ,PRSI ,ACTORBIT>
+***************
+
+**** FILE SS:<ZORK2>GVERBS.ZIL.407, 1-1413 (40731)
+		      (T <TELL "Thrown." CR>)>)
+	       (T <TELL "Huh?" CR>)>>
+**** FILE SS:<ZORK1>GVERBS.ZIL.391, 1-1417 (40693)
+		      (T <TELL "Thrown." CR>)>)>>
+***************
+
+**** FILE SS:<ZORK2>GVERBS.ZIL.407, 1-1443 (41553)
+	 <COND (<NOT <FSET? ,PRSO ,TURNBIT>>
+**** FILE SS:<ZORK1>GVERBS.ZIL.391, 1-1446 (41485)
+	 <COND (<AND <NOT ,PRSI>
+		     <NOT <EQUAL? ,PRSO ,BOOK>>>
+		<TELL "Your bare hands don't appear to be enough." CR>)
+	       (<NOT <FSET? ,PRSO ,TURNBIT>>
+***************
+
+**** FILE SS:<ZORK2>GVERBS.ZIL.407, 1-1503 (43288)
+		     <EQUAL? ,WINNER ,ADVENTURER>
+**** FILE SS:<ZORK1>GVERBS.ZIL.391, 1-1509 (43342)
+***************
+
+**** FILE SS:<ZORK2>GVERBS.ZIL.407, 1-1604 (45864)
+	 <COND (<OR .LOOK? <NOT ,SUPER-BRIEF> <EQUAL? ,HERE ,ZORK3>>
+**** FILE SS:<ZORK1>GVERBS.ZIL.391, 1-1609 (45881)
+	 <COND (<OR .LOOK? <NOT ,SUPER-BRIEF>>
+***************
+
+**** FILE SS:<ZORK2>GVERBS.ZIL.407, 1-1650 (47403)
+		      (<AND <FSET? .OBJ ,WEARBIT>
+			    <IN? .OBJ ,WINNER>>
+**** FILE SS:<ZORK1>GVERBS.ZIL.391, 1-1655 (47398)
+		      (<FSET? .OBJ ,WEARBIT>
+***************
+
+**** FILE SS:<ZORK2>GVERBS.ZIL.407, 1-1688 (48515)
+		     "AUX" Y 1ST? AV STR (PV? <>) (INV? <>))
+**** FILE SS:<ZORK1>GVERBS.ZIL.391, 1-1692 (48477)
+		     "AUX" Y 1ST? SHIT AV STR (PV? <>) (INV? <>))
+***************
+
+**** FILE SS:<ZORK2>GVERBS.ZIL.407, 1-1694 (48721)
+**** FILE SS:<ZORK1>GVERBS.ZIL.391, 1-1698 (48688)
+	 <SET SHIT T>
+***************
+
+**** FILE SS:<ZORK2>GVERBS.ZIL.407, 1-1698 (48810)
+			<COND %<COND (<==? ,ZORK-NUMBER 2>
+				      '(<NOT .Y>
+					<COND (<AND <0? .LEVEL>
+						    <==? ,SPELL? ,S-FANTASIZE>
+						    <PROB 20>>
+					       <TELL "There is a "
+						     <PICK-ONE ,FANTASIES>
+						     " here." CR>
+					       <SET 1ST? <>>)>
+					<RETURN <NOT .1ST?>>))
+				     (ELSE
+				      '(<NOT .Y>
+					<RETURN <NOT .1ST?>>))>
+**** FILE SS:<ZORK1>GVERBS.ZIL.391, 1-1703 (48793)
+			<COND (<NOT .Y>
+			       <RETURN>)
+***************
+
+**** FILE SS:<ZORK2>GVERBS.ZIL.407, 1-1718 (49441)
+**** FILE SS:<ZORK1>GVERBS.ZIL.391, 1-1712 (49096)
+				      <SET SHIT <>>
+***************
+
+**** FILE SS:<ZORK2>GVERBS.ZIL.407, 1-1731 (49864)
+			<RETURN <NOT .1ST?>>)
+**** FILE SS:<ZORK1>GVERBS.ZIL.391, 1-1726 (49544)
+			<RETURN>)
+***************
+
+**** FILE SS:<ZORK2>GVERBS.ZIL.407, 1-1749 (50514)
+		 <SET Y <NEXT? .Y>>>>
+**** FILE SS:<ZORK1>GVERBS.ZIL.391, 1-1744 (50182)
+		 <SET Y <NEXT? .Y>>>
+	 <COND (<AND .1ST? .SHIT> <RFALSE>) (T <RTRUE>)>>
+***************
+
+**** FILE SS:<ZORK2>GVERBS.ZIL.407, 1-1882 (53926)
+"You try to pick it up, but with everything else you have, you can't manage
+to hold onto it!" CR>
+**** FILE SS:<ZORK1>GVERBS.ZIL.391, 1-1878 (53645)
+"You're holding too many things already!" CR>
+***************
+
+**** FILE SS:<ZORK2>GVERBS.ZIL.407, 1-1887 (54075)
+		<FCLEAR ,PRSO ,NDESCBIT>
+**** FILE SS:<ZORK1>GVERBS.ZIL.391, 1-1882 (53741)
+***************
+
+**** FILE SS:<ZORK2>GVERBS.ZIL.407, 1-1984 (56471)
+	             (AV <>) OLIT OHERE)
+	 <SET OLIT ,LIT>
+	 <SET OHERE ,HERE>
+**** FILE SS:<ZORK1>GVERBS.ZIL.391, 1-1978 (56109)
+	             (AV <>) OLIT)
+	 <SET OLIT ,LIT>
+***************
+
+**** FILE SS:<ZORK2>GVERBS.ZIL.407, 1-2008 (57052)
+		<COND (<AND .LB <NOT <FSET? ,HERE ,RLANDBIT>> <NOT ,DEAD>>
+		       %<COND (<==? ,ZORK-NUMBER 1>
+			       '<TELL
+"The " D .WLOC " comes to a rest on the shore." CR CR>)
+			      (T
+			       '<COND (<EQUAL? .AV ,BALLOON>
+				       <TELL
+"The balloon lands." CR>)
+				      (<FSET? .WLOC ,VEHBIT>
+				       <TELL
+"The " D .WLOC " comes to a stop." CR CR>)>)>)>
+**** FILE SS:<ZORK1>GVERBS.ZIL.391, 1-2001 (56663)
+		<COND (<AND .LB
+			    <NOT <FSET? ,HERE ,RLANDBIT>>
+			    <NOT ,DEAD>
+			    <FSET? .WLOC ,VEHBIT>>
+		       <TELL
+"The " D .WLOC " comes to a rest on the shore." CR CR>)>
+***************
+
+**** FILE SS:<ZORK2>GVERBS.ZIL.407, 1-2054 (58530)
+		      (<AND <NOT <EQUAL? ,ADVENTURER ,WINNER>>
+			    <IN? ,ADVENTURER .OHERE>>
+		       <TELL "The " D ,WINNER " leaves the room." CR>)
+		      (<AND .V?
+			    <EQUAL? ,WINNER ,ADVENTURER>>
+		       <V-FIRST-LOOK>)>
+		<RTRUE>)>>
+<ROUTINE GO-NEXT (TBL "AUX" VAL)
+	 <COND (<SET VAL <LKP ,HERE .TBL>>
+		<GOTO .VAL>)>>
+**** FILE SS:<ZORK1>GVERBS.ZIL.391, 1-2042 (57947)
+		      (<NOT <EQUAL? ,ADVENTURER ,WINNER>>
+		       <TELL "The " D ,WINNER " leaves the room." CR>)
+		      (.V? <V-FIRST-LOOK>)>
+		<RTRUE>)>>
+;"0 -> no next, 1 -> success, 2 -> failed move"
+<ROUTINE GO-NEXT (TBL "AUX" VAL)
+	 <COND (<SET VAL <LKP ,HERE .TBL>>
+		<COND (<NOT <GOTO .VAL>> 2)
+		      (T 1)>)>>
+***************
+
+**** FILE SS:<ZORK2>GVERBS.ZIL.407, 1-2121 (60321)
+	 <COND (<EQUAL? .RM ,INSIDE-BARROW>
+		<RFALSE>)>
+**** FILE SS:<ZORK1>GVERBS.ZIL.391, 1-2109 (59729)
+***************
+
+**** FILE SS:<ZORK2>GVERBS.ZIL.407, 1-2127 (60455)
+	 <SETG P-IT-OBJECT .OBJ>
+	 <SETG P-IT-LOC ,HERE>>
+**** FILE SS:<ZORK1>GVERBS.ZIL.391, 1-2113 (59811)
+	 <SETG P-IT-OBJECT .OBJ>>
+***************
+

@@ -1,0 +1,31 @@
+Assembling ZORK2.XZAP.10 on Monday, August 11, 1986 18:40:51
+Release: 63
+
+    64	Inserting ZORK2FREQ.XZAP.5	   (616 bytes)
+   680	Inserting ZORK2DAT.ZAP.10	 (19140 bytes)
+ 19820	Inserting GMACROS.ZAP.11	   (119 bytes)
+ 19939	Inserting GSYNTAX.ZAP.11	     (0 bytes)
+ 19939	Inserting 2DUNGEON.ZAP.11	   (859 bytes)
+ 20798	Inserting GGLOBALS.ZAP.11	  (1127 bytes)
+ 21925	Inserting GCLOCK.ZAP.11	   (178 bytes)
+ 22103	Inserting GMAIN.ZAP.11	   (938 bytes)
+ 23041	Inserting GPARSER.ZAP.11	  (6647 bytes)
+ 29688	Inserting GVERBS.ZAP.11	 (11102 bytes)
+ 40790	Inserting 2ACTIONS.ZAP.11	 (34274 bytes)
+ 75064	Inserting ZORK2STR.ZAP.10	 (17460 bytes)
+
+Symbols unused:
+ROOM?
+ZPROB
+P-DIRECTION
+SWIMYUKS
+
+251 objects.
+168 globals.
+689 word vocabulary.
+
+ 92524 bytes (91K).
+ 19820 bytes of preload.
+ 11767 bytes of impure.
+
+Outputting symbol tables

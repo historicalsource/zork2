@@ -45,11 +45,11 @@
 						       <FORM GETP .O .E>>>)>)>)
 				(<TYPE? .E STRING ZSTRING>
 				 <MAPRET <FORM PRINTI .E>>)
-				(<TYPE? .E FORM>
+				(<TYPE? .E FORM LVAL GVAL>
 				 <MAPRET <FORM PRINT .E>>)
 				(ELSE <ERROR UNKNOWN-TYPE .E>)>>>>>
 
-<ROUTINE PRINTA (O)
+;<ROUTINE PRINTA (O)
 	 <TELL "a " D .O>>
 
 <DEFMAC VERB? ("ARGS" ATMS)

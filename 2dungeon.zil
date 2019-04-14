@@ -5,6 +5,7 @@
 <DIRECTIONS NORTH EAST WEST SOUTH NE NW SE SW UP DOWN IN OUT LAND CROSS>
 
 <ROUTINE GO () 
+	 <PUTB ,P-LEXV 0 59>
 ;"put interrupts on clock chain"
 	 <ENABLE <QUEUE I-WIZARD 4>>
 	 <QUEUE I-LANTERN 200>
@@ -20,7 +21,6 @@
 	 <SETG WINNER ,ADVENTURER>
 	 <SETG PLAYER ,ADVENTURER>
 	 <SETG HERE ,INSIDE-BARROW>
-	 <SETG P-IT-LOC ,HERE>
 	 <SETG P-IT-OBJECT <>>
 	 <COND (<NOT <FSET? ,HERE ,TOUCHBIT>>
 		<V-VERSION>
@@ -656,11 +656,15 @@ On the wall is crudely chiseled the number \"8\".")
 	(SYNONYM MENHIR ROCK STONE)
 	(ADJECTIVE HUGE HEAVY ENORMOUS)
 	(FLAGS NDESCBIT READBIT)
+	(ACTION GLOBAL-MENHIR-F)
 	(DESC "enormous menhir")>
+
+<ROUTINE GLOBAL-MENHIR-F ()
+	 <TELL "It's not here." CR>>
 
 <OBJECT MENHIR
 	(IN LOCAL-GLOBALS)
-	(SYNONYM MENHIR ROCK STONE)
+	(SYNONYM MENHIR ROCK STONE F)
 	(ADJECTIVE HUGE HEAVY ENORMOUS)
 	(FLAGS NDESCBIT READBIT TURNBIT)
 	(DESC "enormous menhir")
@@ -864,7 +868,11 @@ up from a gateway arch.")
 	(IN LOCAL-GLOBALS)
 	(SYNONYM CERBERUS DOG HOUND MONSTER)
 	(ADJECTIVE HUGE GIANT THREE HEADED)
+	(ACTION GLOBAL-CERBERUS-F)
 	(DESC "three-headed dog")>
+
+<ROUTINE GLOBAL-CERBERUS-F ()
+	 <TELL "He's not here." CR>>
 
 <OBJECT CERBERUS
 	(IN CERBERUS-ROOM)
@@ -1559,7 +1567,7 @@ less objective) may be found in Flathead's outrageous autobiography
 \"I'm Rich and You Aren't - So There!\".
 Most of the furniture has been ravaged by passing scavengers. All
 that remains are two signs at the northwest and northeast corners of
-the room, which say|
+the room, which say:|
 |
     <--  VIEWING ROOMS  -->|
 |
@@ -1595,7 +1603,7 @@ The way out (ornate but tasteful) is to the east.
       (IN ROOMS)
       (LDESC
 "This room was used by holders of safety deposit boxes to view
-their contents. On the north side of the room is a sign which says|
+their contents. On the north side of the room is a sign which says:|
 |
 \"Remain here while the teller retrieves your safety deposit box.
 When you are finished, leave the box, and exit to the south.
@@ -1752,13 +1760,12 @@ Hello, Aviator!|
 To land your balloon, say LAND|
 Otherwise, you're on your own!|
 |
-No warranty expressed or implied.
-|")>
+No warranty expressed or implied.")>
 
 <OBJECT SAFE
 	(IN SAFE-ROOM)
 	(SYNONYM SAFE BOX)
-	(ADJECTIVE STEEL)
+	(ADJECTIVE STEEL RUSTY)
 	(DESC "box")
 	(FLAGS CONTBIT NDESCBIT)
 	(ACTION SAFE-FCN)
@@ -1852,7 +1859,8 @@ of explosives in this room is strictly prohibited!|
 	(ADJECTIVE GAUDY)
 	(DESC "gaudy crown")
 	(FLAGS STAGGERED TAKEBIT WEARBIT)
-	(FDESC "The excessively gaudy crown of Lord Dimwit Flathead is here.")
+	(FDESC
+"The excessively gaudy crown of Lord Dimwit Flathead sits in the safe.")
 	(LDESC "Lord Dimwit's crown is here.")
 	(SIZE 10)
 	(VALUE 20)>
@@ -1921,8 +1929,7 @@ simple household functions.|
 |
         >ROBOT, <things to do>|
 |
-At your service!
-") >
+At your service!") >
 
 <OBJECT SLOT
 	(IN SAFE-ROOM)
@@ -2167,7 +2174,7 @@ these ancients were, isn't it?)")
 	(SYNONYM BOOK BOOKS)
 	(ADJECTIVE PURPLE)
 	(DESC "purple book")
-	(FLAGS READBIT TAKEBIT CONTBIT BURNBIT)
+	(FLAGS READBIT TAKEBIT CONTBIT SEARCHBIT BURNBIT)
 	(LDESC
 "Lying in the dust, and covered with mold, is a purple book.")
 	(CAPACITY 2)
@@ -2383,9 +2390,17 @@ seems to walk through ... walls ...\"")>
 	(SYNONYM GNOME ZURICH)
 	(ADJECTIVE ZURICH)
 	(DESC "Gnome of Zurich")
-	(FLAGS ACTORBIT)
+	(FLAGS ACTORBIT CONTBIT OPENBIT)
 	(ACTION ZGNOME-FCN)
 	(LDESC "There is a Gnome of Zurich here.")>
+
+<OBJECT DEPOSIT-BOX
+	(IN GNOME-OF-ZURICH)
+	(SYNONYM BOX)
+	(ADJECTIVE DEPOSIT SAFETY)
+	(DESC "safety deposit box")
+	(FLAGS NDESCBIT TAKEBIT TRYTAKEBIT)
+	(ACTION BOX-F)>
 
 ;"PALANTIR SECTION"
 
@@ -2512,8 +2527,7 @@ Empire. Local grues have been reported sharpening their (slavering)
 fangs....|
 |
 \"Zork II: The Wizard of Frobozz\" was written by Dave Lebling and Marc
-Blank, and is (c) Copyright 1981, 1982, 1983 by Infocom, Inc.|
-|")>
+Blank, and is (c) Copyright 1981, 1982, 1983 by Infocom, Inc.")>
 
 <OBJECT PLACE-MAT
 	(IN GAZEBO-TABLE)
@@ -2590,9 +2604,9 @@ Blank, and is (c) Copyright 1981, 1982, 1983 by Infocom, Inc.|
 <OBJECT GENIE
 	(SYNONYM DEVIL DEMON GENIE DJINN)
 	(DESC "demon")
-	(FLAGS ACTORBIT)
+	(FLAGS ACTORBIT INVISIBLE)
 	(ACTION GENIE-FCN)
-	(LDESC "There is a demon floating in mid-air here.")>
+	(LDESC "There is a demon floating in midair here.")>
 
 <OBJECT WIZARD
 	(SYNONYM WIZARD MAGICIAN SORCEROR MAN)
@@ -2616,13 +2630,12 @@ Blank, and is (c) Copyright 1981, 1982, 1983 by Infocom, Inc.|
 	(IN INSIDE-BARROW)
 	(SYNONYM SWORD ORCRIST GLAMDRING BLADE)
 	(ADJECTIVE ELVISH OLD ANTIQUE)
-	(DESC "sword")
+	(DESC "elvish sword")
 	(FLAGS TAKEBIT WEAPONBIT TRYTAKEBIT)
 	(ACTION SWORD-FCN)
 	(LDESC "An Elvish sword of great antiquity is here.")
 	(FDESC "A sword of Elvish workmanship is on the ground.")
-	(SIZE 30)
-	(VALUE 0)>
+	(SIZE 30)>
 
 <OBJECT REPELLENT
 	(IN ROOM-8)
