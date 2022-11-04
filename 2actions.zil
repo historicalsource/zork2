@@ -1556,8 +1556,9 @@ an exit down a precarious climb. ">
 emanating from a crack in one wall. The light falls upon a dusty wooden table
 in the center of the room. ">
 	   <P-DOOR "south" ,LID-2 ,KEYHOLE-2>
-	   <RTRUE>)>
+	   <RTRUE>)
           (T <PCHECK> <RFALSE>)>
+>
 
 <ROUTINE PCHECK ("AUX" (LID <PLID>))
 	#DECL ((LID) OBJECT)
